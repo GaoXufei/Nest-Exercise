@@ -6,6 +6,10 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt.strategy';
 
+const possportModule = PassportModule.register({
+  defaultStrategy: 'jwt',
+});
+
 @Module({
   imports: [
     JwtModule.register({
@@ -14,12 +18,13 @@ import { JwtStrategy } from './strategies/jwt.strategy';
         expiresIn: '12h',
       },
     }),
-    PassportModule.register({
-      defaultStrategy: 'jwt',
-    }),
+    possportModule,
     UserModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
+  exports: [
+    possportModule,
+  ],
 })
-export class AuthModule {}
+export class AuthModule { }
