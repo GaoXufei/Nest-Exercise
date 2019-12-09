@@ -10,13 +10,13 @@ import { AuthModule } from './modules/auth/auth.module';
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'root',
+      port: 3308,
+      username: 'nest',
+      password: 'password',
       database: 'nest',
       synchronize: true,
-      logging: true,
-      entities: [ __dirname + '/**/*.entity{.ts,.js}'],
+      // logging: true,
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
     }),
     UserModule,
     AuthModule,
@@ -24,4 +24,4 @@ import { AuthModule } from './modules/auth/auth.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

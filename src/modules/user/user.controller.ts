@@ -6,9 +6,10 @@ import { UserDto, UpdatePasswordDto } from './user.dto';
 export class UserController {
   constructor(
     private readonly userService: UserService,
-  ) {/** */}
+  ) {/** */ }
 
   @Post()
+  @UseInterceptors(ClassSerializerInterceptor)
   async create(@Body() data: UserDto) {
     return await this.userService.create(data);
   }
@@ -16,7 +17,7 @@ export class UserController {
   @Get()
   @UseInterceptors(ClassSerializerInterceptor)
   async findOneByUserName(@Query('username') username: string) {
-    return this.userService.getOneByUserName( username );
+    return this.userService.getOneByUserName(username);
   }
 
   @Put()
