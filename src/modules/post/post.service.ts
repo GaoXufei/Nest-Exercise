@@ -14,7 +14,10 @@ export class PostService {
 
   async create(data: CreatePostDto, user: UserEntity) {
     const entity = await this.postsRepository.create(data);
-    await this.postsRepository.save(entity);
+    await this.postsRepository.save({
+      ...entity,
+      user,
+    });
     return entity;
   }
 
