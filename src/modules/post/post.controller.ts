@@ -18,6 +18,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { User } from '../decorators/user.decorator';
 import { User as UserEntity } from '../user/user.entity';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { ListOptionsDecoration } from '../decorators/list-options.decorator';
+import { ListOptionsInterface } from 'src/core/interfaces/list-options.interface';
 
 @Controller('posts')
 @ApiTags('文章管理')
@@ -29,8 +31,10 @@ export class PostController {
   @Get()
   @ApiOperation({ summary: '查找所有文章' })
   @UseInterceptors(ClassSerializerInterceptor)
-  async findAll(@Query('categories') categories: string): Promise<CreatePostDto[]> {
-    return await this.postsService.findAll(categories);
+  async findAll(
+    @ListOptionsDecoration() options: ListOptionsInterface)
+    : Promise<CreatePostDto[]> {
+    return await this.postsService.findAll(options);
   }
 
   @Get(':id')

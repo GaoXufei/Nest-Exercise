@@ -4,6 +4,7 @@ import { Posts } from './post.entity';
 import { Repository } from 'typeorm';
 import { CreatePostDto } from './post.dto';
 import { User as UserEntity } from '../user/user.entity';
+import { ListOptionsInterface } from 'src/core/interfaces/list-options.interface';
 
 @Injectable()
 export class PostService {
@@ -37,12 +38,13 @@ export class PostService {
    * 查找所有文章
    * 带有category（分类）参数时进行分类查询
    */
-  async findAll(categories: string): Promise<CreatePostDto[]> {
+  async findAll(options: ListOptionsInterface): Promise<CreatePostDto[]> {
+    const { categories } = options;
     const queryBuilder = await this.postsRepository.createQueryBuilder('post');
     queryBuilder.leftJoinAndSelect('post.user', 'user');
     queryBuilder.leftJoinAndSelect('post.category', 'category');
     if (categories) {
-      queryBuilder.where('category.alias = :categories', { categories });
+      queryBuilder.where(`category.alias IN (:...categories)`, { categories });
     }
     const entities = await queryBuilder.getMany();
     return entities;
