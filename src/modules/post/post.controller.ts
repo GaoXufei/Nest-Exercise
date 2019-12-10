@@ -29,8 +29,8 @@ export class PostController {
   @Get()
   @ApiOperation({ summary: '查找所有文章' })
   @UseInterceptors(ClassSerializerInterceptor)
-  async findAll(): Promise<CreatePostDto[]> {
-    return await this.postsService.findAll();
+  async findAll(@Query('categories') categories: string): Promise<CreatePostDto[]> {
+    return await this.postsService.findAll(categories);
   }
 
   @Get(':id')
@@ -62,20 +62,20 @@ export class PostController {
 
   @Post(':id/vote')
   @ApiOperation({ summary: '投票', description: '给对应id的文章投票' })
-  @UseGuards( AuthGuard() )
+  @UseGuards(AuthGuard())
   async vote(@Param('id', ParseIntPipe) id: number, @User() user) {
     return await this.postsService.vote(id, user);
   }
 
   @Delete(':id/vote')
   @ApiOperation({ summary: '取消投票' })
-  @UseGuards( AuthGuard() )
+  @UseGuards(AuthGuard())
   async unVote(@Param('id', ParseIntPipe) id: number, @User() user) {
     return await this.postsService.unVote(id, user);
   }
 
   @Get(':id/liked')
-  @UseInterceptors( AuthGuard() )
+  @UseInterceptors(AuthGuard())
   @ApiOperation({ summary: '文章的投票列表' })
   async liked(@Param('id', ParseIntPipe) id: number) {
     return await this.postsService.postLiked(id);

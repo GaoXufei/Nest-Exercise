@@ -35,10 +35,17 @@ export class PostService {
   }
   /**
    * 查找所有文章
+   * 带有category（分类）参数时进行分类查询
    */
-  async findAll(): Promise<CreatePostDto[]> {
-    const entity = await this.postsRepository.find({ relations: ['user'] });
-    return entity;
+  async findAll(categories: string): Promise<CreatePostDto[]> {
+    const queryBuilder = await this.postsRepository.createQueryBuilder('post');
+    queryBuilder.leftJoinAndSelect('post.user', 'user');
+    queryBuilder.leftJoinAndSelect('post.category', 'category');
+    if (categories) {
+      queryBuilder.where('category.alias = :categories', { categories });
+    }
+    const entities = await queryBuilder.getMany();
+    return entities;
   }
   /**
    * 根据id修改文章
@@ -87,7 +94,7 @@ export class PostService {
       .createQueryBuilder()
       .relation(UserEntity, 'voted')
       .of(user)
-      .remove({id});
+      .remove({ id });
   }
 
   async postLiked(id: number) {

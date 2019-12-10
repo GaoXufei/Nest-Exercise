@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, ManyToMany } from 'typeorm';
 import { User as UserEntity } from '../user/user.entity';
+import { Category } from '../category/category.entity';
 
 @Entity()
 export class Posts {
@@ -25,4 +26,8 @@ export class Posts {
   // 多对多关系 多文章对应多用投票
   @ManyToMany(type => UserEntity, user => user.voted)
   liked: UserEntity[];
+
+  // 多对一的关系 多个文章对应一个分类
+  @ManyToOne(type => Category, category => category.posts)
+  category: Category;
 }
