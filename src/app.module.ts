@@ -8,17 +8,7 @@ import { PostModule } from './modules/post/post.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'root',
-      database: 'nest',
-      synchronize: true,
-      logging: true,
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-    }),
+    TypeOrmModule.forRoot(),
     UserModule,
     AuthModule,
     PostModule,
