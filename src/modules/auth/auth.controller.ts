@@ -3,14 +3,17 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './auth.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '../decorators/user.decorator';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
 
 @Controller('auth')
+@ApiTags('权限管理')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
   ) {/** */ }
 
   @Post('login')
+  @ApiOperation({ summary: '登录', description: '登录后返回token，需要在以后的请求头部中添加token' })
   @UseInterceptors(ClassSerializerInterceptor)
   async login(@Body() login: LoginDto) {
     return this.authService.login(login);

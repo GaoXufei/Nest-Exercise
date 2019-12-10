@@ -1,4 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  BeforeInsert,
+  BeforeUpdate,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 import { Posts } from '../post/post.entity';
@@ -15,8 +26,14 @@ export class User {
   @Exclude()
   password: string;
 
+  // 一对多 一个用户对应多篇文章
   @OneToMany(type => Posts, post => post.user)
   posts: Posts[];
+
+  // 多对多 多个用户对应对片文章投票
+  @ManyToMany(type => Posts, post => post.liked)
+  @JoinTable()
+  voted: Posts[];
 
   @CreateDateColumn()
   created: Date;

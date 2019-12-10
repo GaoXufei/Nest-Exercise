@@ -406,6 +406,14 @@
     ts-morph "^4.0.0"
     typescript "3.4.5"
 
+"@nestjs/swagger@^4.0.9":
+  version "4.0.9"
+  resolved "https://registry.npm.taobao.org/@nestjs/swagger/download/@nestjs/swagger-4.0.9.tgz#dfa2105568515bea837b9119d0b94a8763a7e616"
+  integrity sha1-36IQVWhRW+qDe5EZ0LlKh2On5hY=
+  dependencies:
+    lodash "4.17.15"
+    path-to-regexp "6.1.0"
+
 "@nestjs/testing@^6.7.1":
   version "6.10.8"
   resolved "https://registry.npm.taobao.org/@nestjs/testing/download/@nestjs/testing-6.10.8.tgz#f7d15db8143c031bb2aef95cdabff109ab9716a1"
@@ -4190,7 +4198,7 @@ lodash.toarray@^4.4.0:
   resolved "https://registry.npm.taobao.org/lodash.toarray/download/lodash.toarray-4.4.0.tgz#24c4bfcd6b2fba38bfd0594db1179d8e9b656561"
   integrity sha1-JMS/zWsvuji/0FlNsRedjptlZWE=
 
-lodash@^4.17.13, lodash@^4.17.15:
+lodash@4.17.15, lodash@^4.17.13, lodash@^4.17.15:
   version "4.17.15"
   resolved "https://registry.npm.taobao.org/lodash/download/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha1-tEf2ZwoEVbv+7dETku/zMOoJdUg=
@@ -5085,6 +5093,11 @@ path-to-regexp@0.1.7:
   version "0.1.7"
   resolved "https://registry.npm.taobao.org/path-to-regexp/download/path-to-regexp-0.1.7.tgz#df604178005f522f15eb4490e7247a1bfaa67f8c"
   integrity sha1-32BBeABfUi8V60SQ5yR6G/qmf4w=
+
+path-to-regexp@6.1.0:
+  version "6.1.0"
+  resolved "https://registry.npm.taobao.org/path-to-regexp/download/path-to-regexp-6.1.0.tgz#0b18f88b7a0ce0bfae6a25990c909ab86f512427"
+  integrity sha1-Cxj4i3oM4L+uaiWZDJCauG9RJCc=
 
 path-type@^3.0.0:
   version "3.0.0"
@@ -6140,6 +6153,18 @@ supports-color@^7.1.0:
   integrity sha1-aOMlkd9z4lrRxLSRCKLsUHliv9E=
   dependencies:
     has-flag "^4.0.0"
+
+swagger-ui-dist@^3.18.1:
+  version "3.24.3"
+  resolved "https://registry.npm.taobao.org/swagger-ui-dist/download/swagger-ui-dist-3.24.3.tgz#99754d11b0ddd314a1a50db850acb415e4b0a0c6"
+  integrity sha1-mXVNEbDd0xShpQ24UKy0FeSwoMY=
+
+swagger-ui-express@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.npm.taobao.org/swagger-ui-express/download/swagger-ui-express-4.1.2.tgz#fa4ca5337bce207c760a0b9340348159ebf8ffa4"
+  integrity sha1-+kylM3vOIHx2CguTQDSBWev4/6Q=
+  dependencies:
+    swagger-ui-dist "^3.18.1"
 
 symbol-observable@1.2.0:
   version "1.2.0"

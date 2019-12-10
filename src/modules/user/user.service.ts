@@ -11,6 +11,10 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) { /** */ }
 
+  /**
+   * 创建用户
+   * @param data
+   */
   async create(data: UserDto) {
     const { username } = data;
     const user = await this.userRepository.findOne({ username });
@@ -21,7 +25,10 @@ export class UserService {
     await this.userRepository.save(entity);
     return entity;
   }
-
+  /**
+   * 根据用户名查找用户信息
+   * @param username
+   */
   async getOneByUserName(username: string) {
     const result = await this.userRepository.findOne({ username }, { relations: ['posts'] });
     if (!result) {
@@ -29,7 +36,10 @@ export class UserService {
     }
     return result;
   }
-
+  /**
+   * 修改密码
+   * @param data
+   */
   async updatePassword(data: UpdatePasswordDto) {
     // 获取用户提交
     const { username, password, newPassword } = data;
@@ -44,5 +54,12 @@ export class UserService {
     // 将密码修改
     userEntity.password = newPassword;
     return await this.userRepository.save(userEntity);
+  }
+  /**
+   * 查找用户赞过的文章
+   * @param id
+   */
+  async findLinked(id: number) {
+    return await this.userRepository.findOne(id, { relations: ['voted', 'voted.user'] });
   }
 }
