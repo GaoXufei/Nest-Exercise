@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, ManyToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
 import { User as UserEntity } from '../user/user.entity';
 import { Category } from '../category/category.entity';
+import { Tag } from '../tag/tag.entity';
 
 @Entity()
 export class Posts {
@@ -30,4 +31,9 @@ export class Posts {
   // 多对一的关系 多个文章对应一个分类
   @ManyToOne(type => Category, category => category.posts)
   category: Category;
+
+  // 多对多关系 多个标签对应多个文章
+  @ManyToMany(type => Tag, tag => tag.posts)
+  @JoinTable()
+  tags: Tag[];
 }

@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './modules/auth/auth.module';
 import { PostModule } from './modules/post/post.module';
 import { CategoryModule } from './modules/category/category.module';
+import { TagModule } from './modules/tag/tag.module';
 import ORMCONFIG from '../orm.config';
 
 @Module({
@@ -15,6 +16,7 @@ import ORMCONFIG from '../orm.config';
     AuthModule,
     PostModule,
     CategoryModule,
+    TagModule,
   ],
   controllers: [AppController],
   providers: [AppService],

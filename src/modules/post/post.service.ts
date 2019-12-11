@@ -5,13 +5,41 @@ import { Repository } from 'typeorm';
 import { CreatePostDto } from './post.dto';
 import { User as UserEntity } from '../user/user.entity';
 import { ListOptionsInterface } from 'src/core/interfaces/list-options.interface';
+import { Tag } from '../tag/tag.entity';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(Posts)
     private readonly postsRepository: Repository<Posts>,
+    @InjectRepository(Tag)
+    private readonly tagRepository: Repository<Tag>,
   ) {/** */ }
+
+  async beforeTags(tags: Partial<Tag[]>): Promise<any> {
+    const TAGS = tags.map(async item => {
+      const { id, name } = item;
+      // 如果有id 说明可能在数据库中有该标签
+      if (id) {
+        const tag = await this.tagRepository.findOne(id);
+        // 如果能查找则返回实体
+        if (tag) { return tag; }
+        return;
+      }
+      // 如果有name
+      if (name) {
+        // 在数据库中查找标签
+        const tag = await this.tagRepository.findOne({ name });
+        // 如果有则返回该实体
+        if (tag) { return tag; }
+        // 如果没有则在数据库中创建一条
+        return await this.tagRepository.save(item);
+      }
+    });
+    return Promise.all(TAGS);
+  }
+
+  /* * tools or service * */
 
   /**
    * 创建文章
@@ -19,6 +47,10 @@ export class PostService {
    * @param user
    */
   async create(data: CreatePostDto, user: UserEntity) {
+    const { tags } = data;
+    if (tags) {
+      data.tags = await this.beforeTags(tags);
+    }
     const entity = await this.postsRepository.create(data);
     await this.postsRepository.save({
       ...entity,
