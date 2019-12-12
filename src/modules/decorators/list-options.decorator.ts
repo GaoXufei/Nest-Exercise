@@ -1,9 +1,12 @@
 import { createParamDecorator } from '@nestjs/common';
 
 export const ListOptionsDecoration = createParamDecorator((data, req) => {
-  let { categories } = req.query;
+  let { categories, tags } = req.query;
   if (categories) {
     categories = categories.split('-');
   }
-  return { categories };
+  if (tags) {
+    tags = tags.split('-');
+  }
+  return { categories, tags };
 });

@@ -71,12 +71,16 @@ export class PostService {
    * 带有category（分类）参数时进行分类查询
    */
   async findAll(options: ListOptionsInterface): Promise<CreatePostDto[]> {
-    const { categories } = options;
+    const { categories, tags } = options;
     const queryBuilder = await this.postsRepository.createQueryBuilder('post');
     queryBuilder.leftJoinAndSelect('post.user', 'user');
     queryBuilder.leftJoinAndSelect('post.category', 'category');
+    queryBuilder.leftJoinAndSelect('post.tags', 'tags');
     if (categories) {
       queryBuilder.where(`category.alias IN (:...categories)`, { categories });
+    }
+    if (tags) {
+      queryBuilder.andWhere(`tags.name IN (:...tags)`, { tags });
     }
     const entities = await queryBuilder.getMany();
     return entities;
@@ -87,8 +91,14 @@ export class PostService {
    * @param data
    */
   async updateById(id: string, data: CreatePostDto) {
-    const entity = await this.postsRepository.update(id, data);
-    return entity;
+    const { tags } = data;
+    delete data.tags;
+    await this.postsRepository.update(id, data);
+    const entity = await this.postsRepository.findOne(id, { relations: ['category', 'tags'] });
+    if (tags) {
+      entity.tags = await this.beforeTags(tags);
+    }
+    return await this.postsRepository.save(entity);
   }
   /**
    * 根据id删除对应文章
