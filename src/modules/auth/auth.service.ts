@@ -9,7 +9,7 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
-  ) {/** */}
+  ) {/** */ }
   /**
    * 登录
    * @param data { username, password }
@@ -17,11 +17,11 @@ export class AuthService {
   async login(data: LoginDto) {
     const { username, password } = data;
     // 用户查询
-    const entity = await this.userService.getOneByUserName(username);
-    if ( !entity ) { throw new UnauthorizedException('用户不存在'); }
+    const entity = await this.userService.getOneByUserName(username, true);
+    if (!entity) { throw new UnauthorizedException('用户不存在'); }
     // 密码比对
     const isPass = await entity.comparePassword(password);
-    if ( !isPass ) { throw new UnauthorizedException('密码不正确'); }
+    if (!isPass) { throw new UnauthorizedException('密码不正确'); }
     // 通过
     const { id } = entity;
     const payload = { id, username };

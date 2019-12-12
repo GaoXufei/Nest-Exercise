@@ -1,7 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 import { User as UserEntity } from '../user/user.entity';
 import { Category } from '../category/category.entity';
 import { Tag } from '../tag/tag.entity';
+import { Comment } from '../comment/comment.entity';
 
 @Entity()
 export class Posts {
@@ -36,4 +37,8 @@ export class Posts {
   @ManyToMany(type => Tag, tag => tag.posts)
   @JoinTable()
   tags: Tag[];
+
+  // 一对多的关系 一篇文章多条评论
+  @OneToMany(type => Comment, comment => comment.post)
+  comments: Comment[];
 }

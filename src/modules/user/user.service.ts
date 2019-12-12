@@ -29,12 +29,18 @@ export class UserService {
    * 根据用户名查找用户信息
    * @param username
    */
-  async getOneByUserName(username: string) {
-    const result = await this.userRepository.findOne({ username }, { relations: ['posts'] });
-    if (!result) {
+  async getOneByUserName(username: string, isShowPwd?: boolean) {
+    const createBuilder = await this.userRepository.createQueryBuilder('user');
+    createBuilder.leftJoinAndSelect('user.posts', 'posts');
+    createBuilder.where(`user.username = :username`, { username });
+    if (isShowPwd) {
+      createBuilder.addSelect('user.password');
+    }
+    const entity = createBuilder.getOne();
+    if (!entity) {
       throw new BadRequestException('没有该用户!');
     }
-    return result;
+    return entity;
   }
   /**
    * 修改密码

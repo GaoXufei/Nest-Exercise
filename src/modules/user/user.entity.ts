@@ -13,6 +13,7 @@ import {
 import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 import { Posts } from '../post/post.entity';
+import { Comment } from '../comment/comment.entity';
 
 @Entity()
 export class User {
@@ -22,7 +23,7 @@ export class User {
   @Column('varchar', { unique: true })
   username: string;
 
-  @Column()
+  @Column({ select: false })
   @Exclude()
   password: string;
 
@@ -34,6 +35,10 @@ export class User {
   @ManyToMany(type => Posts, post => post.liked)
   @JoinTable()
   voted: Posts[];
+
+  // 评论与用户的关系 多评论对用单用户
+  @OneToMany(type => Comment, comment => comment.user)
+  comments: Comment[];
 
   @CreateDateColumn()
   created: Date;

@@ -21,7 +21,7 @@ export class UserController {
   @ApiOperation({ summary: '查找用户' })
   @UseInterceptors(ClassSerializerInterceptor)
   async findOneByUserName(@Query('username') username: string) {
-    return this.userService.getOneByUserName(username);
+    return this.userService.getOneByUserName(username, true);
   }
 
   @Put()
@@ -33,7 +33,7 @@ export class UserController {
 
   @Get(':id/liked')
   @ApiOperation({ summary: '查找用户喜欢的文章列表' })
-  @UseInterceptors( ClassSerializerInterceptor )
+  @UseInterceptors(ClassSerializerInterceptor)
   async findUserLinked(@Param('id', ParseIntPipe) id: number) {
     return await this.userService.findLinked(id);
   }

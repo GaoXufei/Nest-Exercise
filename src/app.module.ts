@@ -7,6 +7,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { PostModule } from './modules/post/post.module';
 import { CategoryModule } from './modules/category/category.module';
 import { TagModule } from './modules/tag/tag.module';
+import { CommentModule } from './modules/comment/comment.module';
 import ORMCONFIG from '../orm.config';
 
 @Module({
@@ -17,6 +18,7 @@ import ORMCONFIG from '../orm.config';
     PostModule,
     CategoryModule,
     TagModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
