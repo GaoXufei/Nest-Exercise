@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Posts } from './post.entity';
 import { Repository } from 'typeorm';
-import { CreatePostDto, GetPostsDto } from './post.dto';
+import { CreatePostDto } from './post.dto';
 import { User as UserEntity } from '../user/user.entity';
 import { ListOptionsInterface } from 'src/core/interfaces/list-options.interface';
 import { Tag } from '../tag/tag.entity';
@@ -70,7 +70,7 @@ export class PostService {
    * 查找所有文章
    * 带有category（分类）参数时进行分类查询
    */
-  async findAll(options: GetPostsDto): Promise<[Posts[], number]> {
+  async findAll(options: ListOptionsInterface): Promise<[Posts[], number]> {
     const { categories, tags, page, limit, sort, order } = options;
     const queryBuilder = await this.postsRepository.createQueryBuilder('post');
     queryBuilder.leftJoinAndSelect('post.user', 'user');

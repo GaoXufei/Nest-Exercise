@@ -13,7 +13,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { PostService } from './post.service';
-import { CreatePostDto, GetPostsDto } from './post.dto';
+import { CreatePostDto } from './post.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '../../core/decorators/user.decorator';
 import { User as UserEntity } from '../user/user.entity';
@@ -34,7 +34,7 @@ export class PostController {
   @ApiOperation({ summary: '查找所有文章' })
   @UseInterceptors(ClassSerializerInterceptor, TransformInterceptor)
   async findAll(
-    @ListOptionsDecoration() options: GetPostsDto,
+    @ListOptionsDecoration() options: ListOptionsInterface,
   ): Promise<[Posts[], number]> {
     return await this.postsService.findAll(options);
   }
