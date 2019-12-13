@@ -15,10 +15,10 @@ import {
 import { PostService } from './post.service';
 import { CreatePostDto } from './post.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from '../decorators/user.decorator';
+import { User } from '../../core/decorators/user.decorator';
 import { User as UserEntity } from '../user/user.entity';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
-import { ListOptionsDecoration } from '../decorators/list-options.decorator';
+import { ListOptionsDecoration } from '../../core/decorators/list-options.decorator';
 import { ListOptionsInterface } from 'src/core/interfaces/list-options.interface';
 
 @Controller('posts')

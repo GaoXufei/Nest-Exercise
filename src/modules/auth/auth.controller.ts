@@ -2,7 +2,7 @@ import { Controller, Post, Body, UseInterceptors, ClassSerializerInterceptor, Ge
 import { AuthService } from './auth.service';
 import { LoginDto } from './auth.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from '../decorators/user.decorator';
+import { User } from '../../core/decorators/user.decorator';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 
 @Controller('auth')

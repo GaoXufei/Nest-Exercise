@@ -12,7 +12,7 @@ import {
 import { CommentService } from './comment.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CommentDto } from './comment.dto';
-import { User as UserDecorator } from '../decorators/user.decorator';
+import { User as UserDecorator } from '../../core/decorators/user.decorator';
 import { User as UserEntity } from '../user/user.entity';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
