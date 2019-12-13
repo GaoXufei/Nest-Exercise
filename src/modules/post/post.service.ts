@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Posts } from './post.entity';
 import { Repository } from 'typeorm';
-import { CreatePostDto } from './post.dto';
+import { CreatePostDto, GetPostsDto } from './post.dto';
 import { User as UserEntity } from '../user/user.entity';
 import { ListOptionsInterface } from 'src/core/interfaces/list-options.interface';
 import { Tag } from '../tag/tag.entity';
@@ -70,8 +70,8 @@ export class PostService {
    * 查找所有文章
    * 带有category（分类）参数时进行分类查询
    */
-  async findAll(options: ListOptionsInterface): Promise<CreatePostDto[]> {
-    const { categories, tags } = options;
+  async findAll(options: GetPostsDto): Promise<[Posts[], number]> {
+    const { categories, tags, page, limit, sort, order } = options;
     const queryBuilder = await this.postsRepository.createQueryBuilder('post');
     queryBuilder.leftJoinAndSelect('post.user', 'user');
     queryBuilder.leftJoinAndSelect('post.category', 'category');
@@ -83,11 +83,17 @@ export class PostService {
       queryBuilder.andWhere(`tags.name IN (:...tags)`, { tags });
     }
 
+    // 分页
+    // 请求的个数 如10 请求的页码 如3
+    // 10 * ( 3 - 1 ) = 20 从第20条记录开始取值
     queryBuilder
-    .take(3)
-    .skip(3 * (3 - 1));
+      .take(limit)
+      .skip(limit * (page - 1));
 
-    const entities = await queryBuilder.getMany();
+    // 排序
+    queryBuilder.orderBy({ [`post.${sort}`]: order });
+
+    const entities = await queryBuilder.getManyAndCount();
     return entities;
   }
   /**

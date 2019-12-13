@@ -12,3 +12,13 @@ export class CreatePostDto {
   @ApiProperty({ description: '标签列表' })
   tags: Tag[];
 }
+
+// tslint:disable-next-line:max-classes-per-file
+export class GetPostsDto {
+  categories: string;
+  tags: string;
+  limit: number;
+  page: number;
+  sort: string;
+  order: 'DESC' | 'ASC';
+}

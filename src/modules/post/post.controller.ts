@@ -13,13 +13,15 @@ import {
   Query,
 } from '@nestjs/common';
 import { PostService } from './post.service';
-import { CreatePostDto } from './post.dto';
+import { CreatePostDto, GetPostsDto } from './post.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '../../core/decorators/user.decorator';
 import { User as UserEntity } from '../user/user.entity';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { ListOptionsDecoration } from '../../core/decorators/list-options.decorator';
 import { ListOptionsInterface } from 'src/core/interfaces/list-options.interface';
+import { Posts } from './post.entity';
+import { TransformInterceptor } from 'src/core/interceptors/transform.interceptor';
 
 @Controller('posts')
 @ApiTags('文章管理')
@@ -30,10 +32,10 @@ export class PostController {
 
   @Get()
   @ApiOperation({ summary: '查找所有文章' })
-  @UseInterceptors(ClassSerializerInterceptor)
+  @UseInterceptors(ClassSerializerInterceptor, TransformInterceptor)
   async findAll(
-    @ListOptionsDecoration() options: ListOptionsInterface)
-    : Promise<CreatePostDto[]> {
+    @ListOptionsDecoration() options: GetPostsDto,
+  ): Promise<[Posts[], number]> {
     return await this.postsService.findAll(options);
   }
 
