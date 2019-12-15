@@ -1,7 +1,11 @@
-import { Controller, Get, Post, Body, Query, UseInterceptors, ClassSerializerInterceptor, Put, ParseIntPipe, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, UseInterceptors, ClassSerializerInterceptor, Put, ParseIntPipe, Param, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto, UpdatePasswordDto } from './user.dto';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+import { AccessGuard } from 'src/core/guards/access.guard';
+import { Permissions } from 'src/core/decorators/permissions.decorator';
+import { UserRole } from 'src/core/enums/role.enum';
 
 @Controller('users')
 @ApiTags('用户管理')
@@ -36,5 +40,15 @@ export class UserController {
   @UseInterceptors(ClassSerializerInterceptor)
   async findUserLinked(@Param('id', ParseIntPipe) id: number) {
     return await this.userService.findLinked(id);
+  }
+
+  @Put(':id')
+  @UseGuards(AuthGuard(), AccessGuard)
+  @Permissions({ role: UserRole.ADMIN })
+  async updateRole(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: UserDto,
+  ) {
+    return await this.userService.updateRole(id, data);
   }
 }

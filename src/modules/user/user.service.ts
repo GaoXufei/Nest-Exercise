@@ -31,8 +31,10 @@ export class UserService {
    */
   async getOneByUserName(username: string, isShowPwd?: boolean) {
     const createBuilder = await this.userRepository.createQueryBuilder('user');
-    createBuilder.leftJoinAndSelect('user.posts', 'posts');
-    createBuilder.where(`user.username = :username`, { username });
+    // createBuilder.leftJoinAndSelect('user.posts', 'posts');
+    createBuilder
+      .where(`user.username = :username`, { username })
+      .leftJoinAndSelect('user.roles', 'roles');
     if (isShowPwd) {
       createBuilder.addSelect('user.password');
     }
@@ -67,5 +69,14 @@ export class UserService {
    */
   async findLinked(id: number) {
     return await this.userRepository.findOne(id, { relations: ['voted', 'voted.user'] });
+  }
+
+  async updateRole(id: number, data: UserDto) {
+    const { roles } = data;
+    const entity = await this.userRepository.findOne(id);
+    if (roles) {
+      entity.roles = roles;
+    }
+    return await this.userRepository.save(entity);
   }
 }

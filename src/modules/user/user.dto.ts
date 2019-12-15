@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Role } from '../role/role.entity';
 
 // tslint:disable-next-line:max-classes-per-file
 export class UserDto {
@@ -11,6 +12,8 @@ export class UserDto {
   @IsNotEmpty({ message: '密码不能为空' })
   @IsString()
   readonly password: string;
+
+  readonly roles: Role[];
 }
 
 // tslint:disable-next-line:max-classes-per-file
