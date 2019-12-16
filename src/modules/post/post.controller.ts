@@ -22,6 +22,11 @@ import { ListOptionsDecoration } from '../../core/decorators/list-options.decora
 import { ListOptionsInterface } from 'src/core/interfaces/list-options.interface';
 import { Posts } from './post.entity';
 import { TransformInterceptor } from 'src/core/interceptors/transform.interceptor';
+import { AccessGuard } from 'src/core/guards/access.guard';
+import { Permissions } from 'src/core/decorators/permissions.decorator';
+import { Resource } from 'src/core/enums/resource.enum';
+import { Possession } from 'src/core/enums/possession.enum';
+import { UserRole } from 'src/core/enums/role.enum';
 
 @Controller('posts')
 @ApiTags('文章管理')
@@ -54,7 +59,8 @@ export class PostController {
 
   @Put(':id')
   @ApiOperation({ summary: '修改文章' })
-  @UseGuards(AuthGuard()) // 疑问：目前用户是否有权限修改文章
+  @UseGuards(AuthGuard(), AccessGuard)
+  @Permissions({ resource: Resource.POST, possession: Possession.OWN, role: UserRole.VIP })
   async updateById(@Param('id') id: string, @Body() data: CreatePostDto) {
     return await this.postsService.updateById(id, data);
   }

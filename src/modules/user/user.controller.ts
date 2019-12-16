@@ -6,6 +6,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { AccessGuard } from 'src/core/guards/access.guard';
 import { Permissions } from 'src/core/decorators/permissions.decorator';
 import { UserRole } from 'src/core/enums/role.enum';
+import { Resource } from 'src/core/enums/resource.enum';
+import { Possession } from 'src/core/enums/possession.enum';
 
 @Controller('users')
 @ApiTags('用户管理')
@@ -50,5 +52,14 @@ export class UserController {
     @Body() data: UserDto,
   ) {
     return await this.userService.updateRole(id, data);
+  }
+
+  @Get(':id/possess/:resource/:resourceId')
+  async possess(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('resource') resource: string,
+    @Param('resourceId', ParseIntPipe) resourceId: number,
+  ) {
+    return await this.userService.possess(id, resource, resourceId);
   }
 }
