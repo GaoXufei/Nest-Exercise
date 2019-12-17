@@ -10,11 +10,10 @@ import { TagModule } from './modules/tag/tag.module';
 import { CommentModule } from './modules/comment/comment.module';
 import { RoleModule } from './modules/role/role.module';
 import { FileModule } from './modules/file/file.module';
-import ORMCONFIG from '../orm.config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(ORMCONFIG),
+    TypeOrmModule.forRoot(),
     UserModule,
     AuthModule,
     PostModule,
