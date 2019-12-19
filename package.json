@@ -36,6 +36,7 @@
     "class-transformer": "^0.2.3",
     "class-validator": "^0.11.0",
     "cross-env": "^6.0.3",
+    "jimp": "^0.9.3",
     "mysql": "^2.17.1",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",

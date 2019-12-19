@@ -31,18 +31,16 @@ export class UserService {
    */
   async getOneByUserName(username: string, isShowPwd?: boolean) {
     const createBuilder = await this.userRepository.createQueryBuilder('user');
-    // createBuilder.leftJoinAndSelect('user.posts', 'posts');
-    createBuilder
+    const avatarQueryResult = await createBuilder
       .where(`user.username = :username`, { username })
-      .leftJoinAndSelect('user.roles', 'roles');
-    if (isShowPwd) {
-      createBuilder.addSelect('user.password');
-    }
-    const entity = createBuilder.getOne();
-    if (!entity) {
-      throw new BadRequestException('没有该用户!');
-    }
-    return entity;
+      .leftJoinAndSelect('user.roles', 'roles')
+      .leftJoinAndSelect('user.avatar', 'avatar')
+      .orderBy(`avatar.id`, `DESC`)
+      .limit(1)
+      .getOne();
+    if (isShowPwd) { createBuilder.addSelect('user.password'); }
+    if (!avatarQueryResult) { throw new BadRequestException('没有该用户!'); }
+    return avatarQueryResult;
   }
   /**
    * 修改密码
@@ -91,8 +89,8 @@ export class UserService {
       .createQueryBuilder('user')
       .where(`user.id = :id`, { id })
       .leftJoinAndSelect(`user.${resource}`, `${resource}`)
-      .andWhere(`${resource}.id = :resourceId`, {resourceId})
+      .andWhere(`${resource}.id = :resourceId`, { resourceId })
       .getCount();
-    return results === 1 ? true : false ;
+    return results === 1 ? true : false;
   }
 }

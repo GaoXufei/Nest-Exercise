@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Role } from '../role/role.entity';
+import { Avatar } from '../avatar/avatar.entity';
 
 // tslint:disable-next-line:max-classes-per-file
 export class UserDto {
@@ -14,6 +15,7 @@ export class UserDto {
   readonly password: string;
 
   readonly roles: Role[];
+
 }
 
 // tslint:disable-next-line:max-classes-per-file
