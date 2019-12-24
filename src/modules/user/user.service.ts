@@ -31,6 +31,7 @@ export class UserService {
    */
   async getOneByUserName(username: string, isShowPwd?: boolean) {
     const createBuilder = await this.userRepository.createQueryBuilder('user');
+    if (isShowPwd) { createBuilder.addSelect('user.password'); }
     const avatarQueryResult = await createBuilder
       .where(`user.username = :username`, { username })
       .leftJoinAndSelect('user.roles', 'roles')
@@ -38,7 +39,6 @@ export class UserService {
       .orderBy(`avatar.id`, `DESC`)
       .limit(1)
       .getOne();
-    if (isShowPwd) { createBuilder.addSelect('user.password'); }
     if (!avatarQueryResult) { throw new BadRequestException('没有该用户!'); }
     return avatarQueryResult;
   }

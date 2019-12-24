@@ -74,6 +74,7 @@ export class PostService {
     const { categories, tags, page, limit, sort, order } = options;
     const queryBuilder = await this.postsRepository.createQueryBuilder('post');
     queryBuilder.leftJoinAndSelect('post.user', 'user');
+    queryBuilder.leftJoinAndSelect('user.avatar', 'avatar');
     queryBuilder.leftJoinAndSelect('post.category', 'category');
     queryBuilder.leftJoinAndSelect('post.tags', 'tags');
     if (categories) {
