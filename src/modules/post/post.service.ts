@@ -63,7 +63,7 @@ export class PostService {
    * @param id
    */
   async findById(id: string) {
-    const entity = await this.postsRepository.findOne(id);
+    const entity = await this.postsRepository.findOne(id, { relations: ['user', 'user.avatar'] });
     return entity;
   }
   /**
