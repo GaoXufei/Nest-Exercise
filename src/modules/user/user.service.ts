@@ -19,7 +19,11 @@ export class UserService {
     const { username } = data;
     const user = await this.userRepository.findOne({ username });
     if (user) {
-      throw new BadRequestException('用户已存在！');
+      return {
+        statusCode: 400,
+        error: 'Bad Request',
+        message: "用户名已存在！"
+      }
     }
     const entity = await this.userRepository.create(data);
     await this.userRepository.save(entity);
@@ -39,7 +43,6 @@ export class UserService {
       .orderBy(`avatar.id`, `DESC`)
       .limit(1)
       .getOne();
-    if (!avatarQueryResult) { throw new BadRequestException('没有该用户!'); }
     return avatarQueryResult;
   }
   /**

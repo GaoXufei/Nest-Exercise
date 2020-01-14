@@ -6,8 +6,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { AccessGuard } from 'src/core/guards/access.guard';
 import { Permissions } from 'src/core/decorators/permissions.decorator';
 import { UserRole } from 'src/core/enums/role.enum';
-import { Resource } from 'src/core/enums/resource.enum';
-import { Possession } from 'src/core/enums/possession.enum';
+import { User } from '../../core/decorators/user.decorator';
 
 @Controller('users')
 @ApiTags('用户管理')
@@ -28,6 +27,17 @@ export class UserController {
   @UseInterceptors(ClassSerializerInterceptor)
   async findOneByUserName(@Query('username') username: string) {
     return this.userService.getOneByUserName(username, true);
+  }
+
+  @Get('/token')
+  @ApiOperation({ summary: '查找用户(token)' })
+  @UseGuards(AuthGuard())
+  @UseInterceptors(ClassSerializerInterceptor)
+  async findOneByUserToken(
+    @User() user
+  ) {
+    const { username } = user;
+    return this.userService.getOneByUserName(username, true)
   }
 
   @Put()

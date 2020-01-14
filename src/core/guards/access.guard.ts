@@ -1,5 +1,4 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { Observable } from 'rxjs';
 import { Reflector } from '@nestjs/core';
 import { PermissionInterface } from '../interfaces/permission.interface';
 import { User } from 'src/modules/user/user.entity';
@@ -23,7 +22,7 @@ export class AccessGuard implements CanActivate {
       let hasRole: boolean = true;
       let hasPossession: boolean = true;
 
-      if ( possession === Possession.OWN ) {
+      if (possession === Possession.OWN) {
         hasPossession = await this.userService.possess(user.id, resource, resourceId);
       }
 
@@ -46,7 +45,7 @@ export class AccessGuard implements CanActivate {
     const results = await this.validatePermissions(
       permissions,
       request.user,
-      parseInt( request.params.id, 10 ),
+      parseInt(request.params.id, 10),
     );
     return results.includes(true);
   }

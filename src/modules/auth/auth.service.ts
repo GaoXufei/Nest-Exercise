@@ -18,17 +18,21 @@ export class AuthService {
     const { username, password } = data;
     // 用户查询
     const entity = await this.userService.getOneByUserName(username, true);
-    if (!entity) { throw new UnauthorizedException('用户不存在'); }
+    if (!entity) { return { statusCode: 404, message: '没有该用户' } }
     // 密码比对
     const isPass = await entity.comparePassword(password);
-    if (!isPass) { throw new UnauthorizedException('密码不正确'); }
+    if (!isPass) { return { statusCode: 400, message: '用户名/密码错误' } }
     // 通过
     const { id } = entity;
     const payload = { id, username };
     const token = this.signToken(payload);
     return {
-      ...payload,
-      token,
+      message: '登录成功',
+      statusCode: 200,
+      userInfo: {
+        ...payload,
+        token,
+      }
     };
   }
 
