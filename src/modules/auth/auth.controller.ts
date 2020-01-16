@@ -1,9 +1,10 @@
 import { Controller, Post, Body, UseInterceptors, ClassSerializerInterceptor, Get, UseGuards, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './auth.dto';
-import { AuthGuard } from '@nestjs/passport';
+// import { AuthGuard } from '@nestjs/passport';
 import { User } from '../../core/decorators/user.decorator';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../../core/guards/auth.guard';
 
 @Controller('auth')
 @ApiTags('权限管理')
@@ -20,10 +21,11 @@ export class AuthController {
   }
 
   @Get('test')
-  @UseGuards(AuthGuard())
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
   async Test(@User() user) {
     // tslint:disable-next-line:no-console
-    console.log(user);
+    console.log(user, 'test');
     return { code: 200 };
   }
 }

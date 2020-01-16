@@ -15,7 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: JwtPayLoad, done: VerifiedCallback) {
+  async validate(payload: JwtPayLoad, done: VerifiedCallback, error: any) {
     // tslint:disable-next-line:no-console
     console.log(payload, 'payload');
 

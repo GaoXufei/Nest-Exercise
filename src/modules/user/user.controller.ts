@@ -2,11 +2,12 @@ import { Controller, Get, Post, Body, Query, UseInterceptors, ClassSerializerInt
 import { UserService } from './user.service';
 import { UserDto, UpdatePasswordDto } from './user.dto';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
+// import { AuthGuard } from '@nestjs/passport';
 import { AccessGuard } from 'src/core/guards/access.guard';
 import { Permissions } from 'src/core/decorators/permissions.decorator';
 import { UserRole } from 'src/core/enums/role.enum';
 import { User } from '../../core/decorators/user.decorator';
+import { JwtAuthGuard } from '../../core/guards/auth.guard';
 
 @Controller('users')
 @ApiTags('用户管理')
@@ -31,7 +32,7 @@ export class UserController {
 
   @Get('/token')
   @ApiOperation({ summary: '查找用户(token)' })
-  @UseGuards(AuthGuard())
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   async findOneByUserToken(
     @User() user
@@ -55,7 +56,7 @@ export class UserController {
   }
 
   @Put(':id')
-  @UseGuards(AuthGuard(), AccessGuard)
+  @UseGuards(JwtAuthGuard, AccessGuard)
   @Permissions({ role: UserRole.ADMIN })
   async updateRole(
     @Param('id', ParseIntPipe) id: number,

@@ -25,6 +25,7 @@ const possportModule = PassportModule.register({
   providers: [AuthService, JwtStrategy],
   exports: [
     possportModule,
+    JwtModule
   ],
 })
 export class AuthModule { }
